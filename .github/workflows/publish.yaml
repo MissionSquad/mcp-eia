@@ -1,0 +1,61 @@
+name: Publish to npm
+
+on:
+  push:
+    branches:
+      - main # Or your release branch
+
+jobs:
+  publish:
+    # Only run this job if the commit message includes '[release]' or similar trigger
+    # Or configure it to run only on tagged commits matching a pattern (e.g., v*)
+    if: contains(github.event.head_commit.message, '[release]') || startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Allow write access to push the new tag and commit
+      # id-token: write # Required for trusted publishing (OIDC) - Recommended!
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      # Fetch all history for version bump tools like standard-version
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # Match your project's Node.js version
+        registry-url: 'https://registry.npmjs.org/'
+        cache: 'yarn'
+
+    - name: Install Dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: Build Project
+      run: yarn build
+
+    - name: Configure Git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Bump version and generate changelog
+      run: npx standard-version --commit-all --release-as patch
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Push changes to repository
+      run: git push --follow-tags origin ${{ github.ref_name }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Publish to npm
+      run: yarn publish --access public
+      env:
+        # Use a Node Auth Token stored as a GitHub Secret
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        # --- OR ---
+        # Use Trusted Publishing (OIDC) - Recommended!
+        # No NODE_AUTH_TOKEN needed if configured in npmjs.com settings
+        # Ensure the 'id-token: write' permission is set for the job above.
