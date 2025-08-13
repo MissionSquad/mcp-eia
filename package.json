@@ -1,6 +1,6 @@
 {
-  "name": "mcp-eia",
-  "version": "1.0.3",
+  "name": "@missionsquad/mcp-eia",
+  "version": "1.0.4",
   "description": "MCP server for the U.S. Energy Information Administration (EIA) API",
   "type": "module",
   "main": "dist/index.js",
@@ -25,7 +25,10 @@
     "llm",
     "ai"
   ],
-  "author": "Your Name <your.email@example.com>",
+  "author": "Jayson Jacobs",
+  "repository": "https://github.com/missionsquad/mcp-eia",
+  "homepage": "https://github.com/missionsquad/mcp-eia/",
+  "bugs": "https://github.com/missionsquad/mcp-eia/issues",
   "license": "MIT",
   "dependencies": {
     "@missionsquad/common": "^1.0.2",
