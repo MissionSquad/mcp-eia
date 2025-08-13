@@ -30,6 +30,9 @@
   "homepage": "https://github.com/missionsquad/mcp-eia/",
   "bugs": "https://github.com/missionsquad/mcp-eia/issues",
   "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@missionsquad/common": "^1.0.2",
     "@missionsquad/fastmcp": "^1.1.0",
