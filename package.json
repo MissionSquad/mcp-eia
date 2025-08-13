@@ -1,6 +1,6 @@
 {
   "name": "@missionsquad/mcp-eia",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "MCP server for the U.S. Energy Information Administration (EIA) API",
   "type": "module",
   "main": "dist/index.js",
